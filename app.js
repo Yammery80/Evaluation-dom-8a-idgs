@@ -41,6 +41,29 @@ const buildTarea = ({title, tag}) => {
     return li;
 };
 
+//Eliminar tarjeta individual 
+
+listaTareas.addEventListener('click',(e)=>{
+
+    const btn = e.target.closest('button');
+    if(!btn) return;
+
+    const action = btn.dataset.action;
+    const card = btn.closest('.card');
+
+    if(!card) return;
+
+    //eliminar
+
+    if(action === 'del'){
+        card.remove();
+    }
+
+
+    applyFilters();
+    updateStats();
+});
+
 
 
 //Agregar tarea funcion
