@@ -13,6 +13,9 @@ const listaTareas = $('#listaTareas');
 //filtrar tareas
 const chips = $$('.chip');
 
+//Limpiar
+const btnLimpiarBuscar = $('#btnLimpiarBuscar');
+
 
 //Estado de los filtros
 const filterState = {
@@ -109,6 +112,7 @@ chips.forEach(chip =>{
 });
 
 
+
 //Eventos de las funciones
 
 //Agregar tarea funcion
@@ -171,6 +175,16 @@ form.addEventListener('submit', (e)=>{
     inputBuscar.addEventListener('input', () => {
 
     filterState.text = inputBuscar.value.toLowerCase();
+
+    applyFilters();
+
+});
+
+//Funcion limpiar filtros
+btnLimpiarBuscar.addEventListener('click', () => {
+
+    inputBuscar.value = '';
+    filterState.text = '';
 
     applyFilters();
 
