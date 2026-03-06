@@ -19,6 +19,8 @@ const filterState = {
     text: '',
     tag: 'all'
 };
+//Referencia a input de busqueda
+const inputBuscar = $('#inputBuscar');
 
 
 //Agregar nuevas tareas
@@ -107,7 +109,7 @@ chips.forEach(chip =>{
 });
 
 
-//Llamadas a la acción
+//Eventos de las funciones
 
 //Agregar tarea funcion
 
@@ -133,30 +135,46 @@ form.addEventListener('submit', (e)=>{
 
 //Funcion filtrar tarea por categoria
 
-const applyFilters = () =>{
+    const applyFilters = () =>{
 
-    const cards = $$('.card', listaTareas);
-    cards.forEach(card =>{
+        const cards = $$('.card', listaTareas);
+        
+        cards.forEach(card =>{
 
-        const tag = card.dataset.tag;
-        const fav = card.dataset.fav === '1';
+            const title = $('.card__title', card).textContent.toLowerCase();
+            const tag = card.dataset.tag;
+            const fav = card.dataset.fav === '1';
 
-        let matchTag = true;
+            const matchText = title.includes(filterState.text);
+            let matchTag = true;
 
-        if(filterState.tag === 'fav'){
-            matchTag = fav;
-        }
-        else if(filterState.tag !== 'all'){
-            matchTag = tag === filterState.tag;
-        }
+            if(filterState.tag === 'fav'){
+                matchTag = fav;
+            }
+            else if(filterState.tag !== 'all'){
+                matchTag = tag === filterState.tag;
+            }
+            
+             const visible = matchText && matchTag;
+            card.style.display = visible ? '' : 'none';
 
-        card.style.display = matchTag ? '' : 'none';
-        console.log({
-        tag,
-        filter: filterState.tag,
-        match: tag === filterState.tag
-});
+            //verificar si los objetos que se traen los detecta como falso o verdadero, para que puedan ocultarlos
+            // card.style.display = matchTag ? '' : 'none';
+            // console.log({
+            // tag,
+            // filter: filterState.tag,
+            // match: tag === filterState.tag
+            //});
     });
+
+    //Funcion filtrar tarea por texto
+    inputBuscar.addEventListener('input', () => {
+
+    filterState.text = inputBuscar.value.toLowerCase();
+
+    applyFilters();
+
+});
 
 };
 
