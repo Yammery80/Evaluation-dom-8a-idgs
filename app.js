@@ -25,6 +25,11 @@ const filterState = {
 //Referencia a input de busqueda
 const inputBuscar = $('#inputBuscar');
 
+//Estadisticas
+const statTotal = $('#statTotal');
+const statVisibles = $('#statVisibles');
+const statFavs = $('#statFavs');
+
 
 //Agregar nuevas tareas
 
@@ -89,7 +94,7 @@ listaTareas.addEventListener('click',(e)=>{
     }
 
     applyFilters();
-
+    updateStats(); 
 });
 
 
@@ -107,10 +112,26 @@ chips.forEach(chip =>{
         filterState.tag = chip.dataset.filter;
 
         applyFilters();
+        updateStats();
     });
 
 });
 
+//Estadisticas
+const updateStats = () => {
+
+    const cards = $$('#listaTareas .card');
+
+    const total = cards.length;
+
+    const visibles = cards.filter(card => card.style.display !== 'none').length;
+
+    const favs = cards.filter(card => card.dataset.fav === '1').length;
+
+    statTotal.textContent = total;
+    statVisibles.textContent = visibles;
+    statFavs.textContent = favs;
+};
 
 
 //Eventos de las funciones
@@ -134,7 +155,7 @@ form.addEventListener('submit', (e)=>{
     inputTitulo.focus();
 
     applyFilters();
-
+    updateStats();
 });
 
 //Funcion filtrar tarea por categoria
@@ -177,7 +198,7 @@ form.addEventListener('submit', (e)=>{
     filterState.text = inputBuscar.value.toLowerCase();
 
     applyFilters();
-
+    updateStats();
 });
 
 //Funcion limpiar filtros
@@ -187,6 +208,7 @@ btnLimpiarBuscar.addEventListener('click', () => {
     filterState.text = '';
 
     applyFilters();
+    updateStats();
 });
 
 };
@@ -195,3 +217,4 @@ btnLimpiarBuscar.addEventListener('click', () => {
 
 //Iniciar 
 applyFilters();
+updateStats();
