@@ -58,7 +58,11 @@ listaTareas.addEventListener('click',(e)=>{
     if(action === 'del'){
         card.remove();
     }
+    // completado de tarea
 
+    if(action === 'done'){
+        card.classList.toggle('is-done');
+    }
 
     applyFilters();
     updateStats();
