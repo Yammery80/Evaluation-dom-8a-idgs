@@ -187,7 +187,6 @@ btnLimpiarBuscar.addEventListener('click', () => {
     filterState.text = '';
 
     applyFilters();
-
 });
 
 };
