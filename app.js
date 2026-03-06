@@ -5,12 +5,21 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
 // Referencias a elementos del DOM
-
+//agregar tarea
 const form = $('#formTarea');
 const inputTitulo = $('#inputTitulo');
 const selectTag = $('#selectTag');
-
 const listaTareas = $('#listaTareas');
+//filtrar tareas
+const chips = $$('.chip');
+
+
+//Estado de los filtros
+const filterState = {
+    text: '',
+    tag: 'all'
+};
+
 
 //Agregar nuevas tareas
 
@@ -64,11 +73,41 @@ listaTareas.addEventListener('click',(e)=>{
         card.classList.toggle('is-done');
     }
 
+    //Favorita
+        if(action === 'fav'){
+
+        const isFav = card.dataset.fav === '1';
+
+        card.dataset.fav = isFav ? '0' : '1';
+
+        btn.textContent = isFav ? '☆' : '★';
+    }
+
     applyFilters();
-    updateStats();
+
 });
 
 
+//Filtros
+
+chips.forEach(chip =>{
+
+    chip.addEventListener('click',()=>{
+        console.log("clic en filtro:", chip.dataset.filter);
+
+        chips.forEach(c=>c.classList.remove('is-active'));
+
+        chip.classList.add('is-active');
+
+        filterState.tag = chip.dataset.filter;
+
+        applyFilters();
+    });
+
+});
+
+
+//Llamadas a la acción
 
 //Agregar tarea funcion
 
@@ -89,5 +128,39 @@ form.addEventListener('submit', (e)=>{
     inputTitulo.focus();
 
     applyFilters();
-    updateStats();
+
 });
+
+//Funcion filtrar tarea por categoria
+
+const applyFilters = () =>{
+
+    const cards = $$('.card', listaTareas);
+    cards.forEach(card =>{
+
+        const tag = card.dataset.tag;
+        const fav = card.dataset.fav === '1';
+
+        let matchTag = true;
+
+        if(filterState.tag === 'fav'){
+            matchTag = fav;
+        }
+        else if(filterState.tag !== 'all'){
+            matchTag = tag === filterState.tag;
+        }
+
+        card.style.display = matchTag ? '' : 'none';
+        console.log({
+        tag,
+        filter: filterState.tag,
+        match: tag === filterState.tag
+});
+    });
+
+};
+
+
+
+//Iniciar 
+applyFilters();
