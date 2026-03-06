@@ -30,6 +30,9 @@ const statTotal = $('#statTotal');
 const statVisibles = $('#statVisibles');
 const statFavs = $('#statFavs');
 
+//Vacio si no hay tareas
+const emptyState = $('#emptyState');
+
 
 //Agregar nuevas tareas
 
@@ -131,6 +134,13 @@ const updateStats = () => {
     statTotal.textContent = total;
     statVisibles.textContent = visibles;
     statFavs.textContent = favs;
+
+    // Estado vacío
+    if(visibles === 0){
+        emptyState.classList.remove('is-hidden');
+    } else {
+        emptyState.classList.add('is-hidden');
+    }
 };
 
 
